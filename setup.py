@@ -9,6 +9,5 @@ setup(
   url = 'https://github.com/pbredikhin/test_helper',
   download_url = 'https://github.com/pbredikhin/test_helper/tarball/0.11',
   keywords = ['testing', 'autograder', 'image'],
-  classifiers = [],
-  include_package_data=True
+  classifiers = []
 )
