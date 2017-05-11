@@ -10,6 +10,9 @@ from datetime import timedelta
 from sklearn.metrics import accuracy_score
 from bs4 import BeautifulSoup
 import gensim
+import site
+
+path_to_packages = site.getsitepackages()[0] + "/test_helper/data/"
 
 class TestFailure(Exception):
     pass
@@ -137,7 +140,8 @@ class Test(object):
         try:
             example_tfidf = tfidf_vectorizer.transform(examples)
             predictions = classifier.predict(example_tfidf)
-            cls.assertEquals([1, 0, 1, 1, 0, 1, 1, 0, 0, 1], list(predictions), msg, msg_success)
+            ac = accuracy_score(np.array([1, 0, 1, 1, 0, 1, 1, 0, 0, 1]), predictions)
+            cls.assertEquals(True, ac >= 0.8, msg, msg_success)
         except:
             cls.assertEquals(False, True, msg, msg_success)
 
@@ -148,7 +152,7 @@ class Test(object):
         if preds.size != 1500:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('spam_ham_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'spam_ham_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.75, msg, msg_success)
     @classmethod
@@ -157,7 +161,7 @@ class Test(object):
         if preds.size != 1500:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('spam_ham_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'spam_ham_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.9, msg, msg_success)
     @classmethod
@@ -166,7 +170,7 @@ class Test(object):
         if preds.size != 1500:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('spam_ham_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'spam_ham_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.95, msg, msg_success)
     @classmethod
@@ -175,7 +179,7 @@ class Test(object):
         if preds.size != 1500:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('spam_ham_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'spam_ham_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.975, msg, msg_success)
     @classmethod
@@ -184,7 +188,7 @@ class Test(object):
         if preds.size != 1500:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('spam_ham_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'spam_ham_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.9875, msg, msg_success)
 
@@ -195,7 +199,7 @@ class Test(object):
         if preds.size != 393:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('titanic_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'titanic_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.5, msg, msg_success)
     @classmethod
@@ -204,7 +208,7 @@ class Test(object):
         if preds.size != 393:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('titanic_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'titanic_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.7, msg, msg_success)
     @classmethod
@@ -213,7 +217,7 @@ class Test(object):
         if preds.size != 393:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('titanic_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'titanic_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.75, msg, msg_success)
     @classmethod
@@ -222,7 +226,7 @@ class Test(object):
         if preds.size != 393:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('titanic_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'titanic_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.775, msg, msg_success)
     @classmethod
@@ -231,7 +235,7 @@ class Test(object):
         if preds.size != 393:
             cls.assertEquals(True, False, 'Incorrect amount of predicted labels', '')
             return
-        y_test = np.loadtxt('titanic_test_labels.txt')
+        y_test = np.loadtxt(path_to_packages + 'titanic_test_labels.txt')
         ac = accuracy_score(y_test, np.array(preds))
         cls.assertEquals(True, ac > 0.8, msg, msg_success)
 
@@ -662,9 +666,9 @@ class Test(object):
     
     @classmethod    
     def checkLDAModel(cls, model, corpus, result, number):		
-        load_dict = gensim.corpora.Dictionary.load("ex3dict.txt")
+        load_dict = gensim.corpora.Dictionary.load(path_to_packages + "ex3dict.txt")
         cls.assertEquals(model.id2word,load_dict,'Dictionary is incorrect', 'Exercise %d.1 is successful' %number)
-        with open('ex3corpus.txt','r') as fobj:
+        with open(path_to_packages + 'ex3corpus.txt','r') as fobj:
             load_corpus = fobj.read();        
         cls.assertEquals(str(corpus), load_corpus,'Corpus is incorrect', 'Exercise %d.2 is successful' % number)
         cls.assertEquals(model.passes, 20, "Passes value is incorrect", "Exercise %d.3 is successful" % number)
